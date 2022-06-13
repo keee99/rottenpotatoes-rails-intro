@@ -12,8 +12,28 @@ class MoviesController < ApplicationController
     # PART 1 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     @all_ratings = Movie.all_ratings
 
+    # If params has the ratings key
+    if params.key?(:ratings)
+      # retrieve the ratings hash from the params hash
+      @ratings_to_show_hash = params[:ratings]
+    else
+      # Else, set as empty hash
+      @ratings_to_show_hash = Hash.new
+    end
+
     
-    @ratings_to_show_hash = []
+    # retrieve ratings to show as an array
+    @ratings_to_show_array = @ratings_to_show_hash.keys
+
+
+    # retrieve appropriate movies from the DB
+    if @ratings_to_show_array.empty?
+      # If ratings to show is empty, show ALL movies
+      @movies = Movie.where(rating: @all_ratings)
+    else
+      # Else, show the selected only
+      @movies = Movie.where(rating: @ratings_to_show_array)
+    end
 
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
   end

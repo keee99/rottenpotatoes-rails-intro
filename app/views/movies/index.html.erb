@@ -9,7 +9,11 @@
   <% @all_ratings.each do |rating| %>
     <div class="form-check  form-check-inline">
       <%= label_tag "ratings[#{rating}]", rating, class: 'form-check-label' %>
+
+      <%# ID Automagically generated for the below checkbox: "rating" + "_" + "{rating}" %>
+      <%# For every form input, an ID attribute is generated from its name %>
       <%= check_box_tag "ratings[#{rating}]", "1",  @ratings_to_show_hash.include?(rating), class: 'form-check-input' %>
+      
     </div>
   <% end %>
   <%= submit_tag 'Refresh', id: 'ratings_submit', class: 'btn btn-primary' %>
