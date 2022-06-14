@@ -21,20 +21,27 @@ class MoviesController < ApplicationController
     # retrieve ratings to show
     @movies = Movie.with_ratings(@ratings_to_show_hash.keys)
 
+    # Part 3: Save to session
+    session[:ratings] = @ratings_to_show_hash
+
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     # PART 2 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+    @sort_by = params[:sort_by]
+
     # Column Sorting
     # If params has the sort_by key
-    if params.key?(:sort_by) && !params[:sort_by].empty?
-      # init sort_by for persistance
-      @sort_by = params[:sort_by]
+    if @sort_by != nil && !@sort_by.empty?
       # Class change for headers
       # class: 'hilite bg-warning' 
       @title_class = (@sort_by == "title") ? "hilite bg-warning" : ""
       @release_date_class = (@sort_by == "release_date") ? "hilite bg-warning" : ""
       # Order @movies to the correct order
       @movies = @movies.order(@sort_by.to_sym)
+
+      # Part 3: Save to session
+      session[:sort_by] = @sort_by
+
     end
 
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
