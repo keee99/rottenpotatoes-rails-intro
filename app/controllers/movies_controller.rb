@@ -22,18 +22,8 @@ class MoviesController < ApplicationController
     end
 
     
-    # retrieve ratings to show as an array
-    @ratings_to_show_array = @ratings_to_show_hash.keys
-
-
-    # retrieve appropriate movies from the DB
-    if @ratings_to_show_array.empty?
-      # If ratings to show is empty, show ALL movies
-      @movies = Movie.where(rating: @all_ratings)
-    else
-      # Else, show the selected only
-      @movies = Movie.where(rating: @ratings_to_show_array)
-    end
+    # retrieve ratings to show
+    @movies = Movie.with_ratings(@ratings_to_show_hash.keys)
 
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
   end
