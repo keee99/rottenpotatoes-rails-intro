@@ -26,6 +26,22 @@ class MoviesController < ApplicationController
     @movies = Movie.with_ratings(@ratings_to_show_hash.keys)
 
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    # PART 2 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    @all_ratings = Movie.all_ratings
+
+    # If params has the sort_by key
+    if params.key?(:sort_by)
+      # Make param available to view for class change
+      @sort_by = params[:sort_by]
+      # Order @movies to the correct order
+      @movies = @movies.order(params[:sort_by].to_sym)
+    end
+
+    
+    
+    
+
+    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
   end
 
   def new
