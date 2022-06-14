@@ -7,16 +7,29 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.all
+
+    # PART 3 ____________________________________________________________
+    
+    # If coming from a non-home page, take from session
+
+    
+    if !params.key?(:home)
+      @ratings_to_show_hash = session.key?(:ratings) ? session[:ratings] : Hash.new
+      @sort_by =  session.key?(:sort_by) ? session[:sort_by] : nil
+    # Else, take from params
+    else
+      @ratings_to_show_hash = params.key?(:ratings) ? params[:ratings] : Hash.new
+      @sort_by = params[:sort_by]
+    end
+
+
+    # ___________________________________________________________________
+
 
     # PART 1 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     
     # Movie Retrieval
     @all_ratings = Movie.all_ratings
-
-    # If params has the ratings key, retrieve the ratings hash from the params hash
-    # Else, set as empty hash
-    @ratings_to_show_hash = params.key?(:ratings) ? params[:ratings] : Hash.new
 
     # retrieve ratings to show
     @movies = Movie.with_ratings(@ratings_to_show_hash.keys)
@@ -24,10 +37,12 @@ class MoviesController < ApplicationController
     # Part 3: Save to session
     session[:ratings] = @ratings_to_show_hash
 
+
+
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     # PART 2 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    @sort_by = params[:sort_by]
+ 
 
     # Column Sorting
     # If params has the sort_by key
@@ -45,8 +60,6 @@ class MoviesController < ApplicationController
     end
 
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-
     
   end
 

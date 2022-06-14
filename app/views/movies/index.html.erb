@@ -3,6 +3,14 @@
 
 <%#  Part 2: Start here... %>
 
+<div>
+  <%= @test %>
+  <%= @ratings_to_show_hash %>
+</div>
+<div>
+  <%= @test2 %>
+  <%= @sort_by %>
+</div>
 <%= form_tag movies_path, method: :get, id: 'ratings_form' do %>
   Include:
   <% @all_ratings.each do |rating| %>
@@ -17,6 +25,7 @@
   <% end %>
   
   <input name="sort_by" value="<%= @sort_by %>" type="hidden">
+  <input name="home" value="1" type="hidden">
 
   <%= submit_tag 'Refresh', id: 'ratings_submit', class: 'btn btn-primary' %>
 <% end %>
@@ -25,13 +34,13 @@
   <thead>
     <tr>
       <th class="<%= @title_class %>" >
-        <%= link_to "Movie Title", movies_path(:ratings => @ratings_to_show_hash, :sort_by => "title"), id: 'title_header' %>
+        <%= link_to "Movie Title", movies_path(:home => 1, :ratings => @ratings_to_show_hash, :sort_by => "title"), id: 'title_header' %>
       </th>
       
       <th>Rating</th>
 
       <th class="<%= @release_date_class %>" >
-        <%= link_to "Release Date", movies_path(:ratings => @ratings_to_show_hash, :sort_by => "release_date"), id: 'release_date_header'  %>
+        <%= link_to "Release Date", movies_path(:home => 1, :ratings => @ratings_to_show_hash, :sort_by => "release_date"), id: 'release_date_header'  %>
       </th>
 
       <th>More Info</th>
