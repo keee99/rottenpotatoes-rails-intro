@@ -3,7 +3,6 @@
 
 <%#  Part 2: Start here... %>
 
-
 <%= form_tag movies_path, method: :get, id: 'ratings_form' do %>
   Include:
   <% @all_ratings.each do |rating| %>
@@ -13,27 +12,26 @@
       <%# ID Automagically generated for the below checkbox: "rating" + "_" + "{rating}" %>
       <%# For every form input, an ID attribute is generated from its name %>
       <%= check_box_tag "ratings[#{rating}]", "1",  @ratings_to_show_hash.include?(rating), class: 'form-check-input' %>
-      
+
     </div>
   <% end %>
+  
+  <input name="sort_by" value="<%= @sort_by %>" type="hidden">
+
   <%= submit_tag 'Refresh', id: 'ratings_submit', class: 'btn btn-primary' %>
 <% end %>
 
 <table class="table table-striped col-md-12" id="movies">
   <thead>
     <tr>
-      <th>
-        <% if (@sort_by == "title") %>
-          <%= link_to "Movie Title", movies_path(:sort_by => "title"), id: 'title_header', class: 'hilite text-success' %>
-        <% else %>
-          <%= link_to "Movie Title", movies_path(:sort_by => "title"), id: 'title_header' %>
-        <% end %>
+      <th class="<%= @title_class %>" >
+        <%= link_to "Movie Title", movies_path(:ratings => @ratings_to_show_hash, :sort_by => "title"), id: 'title_header' %>
       </th>
       
       <th>Rating</th>
 
-      <th>
-        <%= link_to "Release Date", movies_path(:sort_by => "release_date"), id: 'release_date_header'  %>
+      <th class="<%= @release_date_class %>" >
+        <%= link_to "Release Date", movies_path(:ratings => @ratings_to_show_hash, :sort_by => "release_date"), id: 'release_date_header'  %>
       </th>
 
       <th>More Info</th>

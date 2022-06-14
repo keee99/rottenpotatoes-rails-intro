@@ -10,38 +10,37 @@ class MoviesController < ApplicationController
     @movies = Movie.all
 
     # PART 1 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    
+    # Movie Retrieval
     @all_ratings = Movie.all_ratings
 
-    # If params has the ratings key
-    if params.key?(:ratings)
-      # retrieve the ratings hash from the params hash
-      @ratings_to_show_hash = params[:ratings]
-    else
-      # Else, set as empty hash
-      @ratings_to_show_hash = Hash.new
-    end
+    # If params has the ratings key, retrieve the ratings hash from the params hash
+    # Else, set as empty hash
+    @ratings_to_show_hash = params.key?(:ratings) ? params[:ratings] : Hash.new
 
-    
     # retrieve ratings to show
     @movies = Movie.with_ratings(@ratings_to_show_hash.keys)
 
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     # PART 2 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    @all_ratings = Movie.all_ratings
 
+    # Column Sorting
     # If params has the sort_by key
-    if params.key?(:sort_by)
-      # Make param available to view for class change
+    if params.key?(:sort_by) && !params[:sort_by].empty?
+      # init sort_by for persistance
       @sort_by = params[:sort_by]
+      # Class change for headers
+      # class: 'hilite bg-warning' 
+      @title_class = (@sort_by == "title") ? "hilite bg-warning" : ""
+      @release_date_class = (@sort_by == "release_date") ? "hilite bg-warning" : ""
       # Order @movies to the correct order
-      @movies = @movies.order(params[:sort_by].to_sym)
+      @movies = @movies.order(@sort_by.to_sym)
     end
 
-    
-    
-    
-
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+    
   end
 
   def new
